@@ -7,7 +7,7 @@ QString Wrapper::callScript(QString script, QString args) {
 
     QProcess process;
     process.setProcessChannelMode(QProcess::MergedChannels);
-    QString exe = "python3 "+script+" "+args;
+    QString exe = "python "+script+" "+args;
     process.start(exe);
     process.waitForFinished(-1);
     QString output(process.readAllStandardOutput());
@@ -86,7 +86,7 @@ QString Wrapper::updateHistory(QString args) {
 QString Wrapper::getData(QString testSuite, QString testCaseID) {
     qDebug() << __PRETTY_FUNCTION__ << endl;
 
-    qDebug() << testSuite << " " << testCaseID << endl;
+    // qDebug() << testSuite << " " << testCaseID << endl;
     QString args = testSuite + " " + testCaseID;
     return callScript("read.py", args);
 }

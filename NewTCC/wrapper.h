@@ -4,6 +4,8 @@
 #include <QProcess>
 #include <QDebug>
 
+#define __PRETTY_FUNCTION__ __FUNCSIG__
+
 class Wrapper
 {
 public:

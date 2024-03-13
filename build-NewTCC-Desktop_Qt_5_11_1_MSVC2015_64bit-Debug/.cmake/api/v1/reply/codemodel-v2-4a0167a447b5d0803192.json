@@ -1,0 +1,70 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-8965319cf57dfa6dd6af.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "NewTCC",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "NewTCC::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-NewTCC-Debug-638b6b13f087bfbf33c7.json",
+					"name" : "NewTCC",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "NewTCC_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-NewTCC_autogen-Debug-97acc2bb4afdbb5a2f2f.json",
+					"name" : "NewTCC_autogen",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/sangd/Documents/newTCC/build-NewTCC-Desktop_Qt_5_11_1_MSVC2015_64bit-Debug",
+		"source" : "C:/Users/sangd/Documents/newTCC/NewTCC"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}

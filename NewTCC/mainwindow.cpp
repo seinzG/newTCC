@@ -1,17 +1,26 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
-#define ARGS(str) "\""+str+"\""
-#define PY_ARGS					"\"1"+TestSuite+"\" "+\
-                                "\"2"+TestCaseID+"\" "+\
-                                "\"3"+Functionality+"\" "+\
-                                "\"4"+TestDescription+"\" "+\
-                                "\"5"+Steps+"\" "+\
-                                "\"6"+ER+"\" "+\
-                                "\"7"+ValidTCs+"\" "+\
-                                "\"8" +Automation+"\" "+\
-                                "\"9"+RI+"\" "+\
-                                "\"A"+Note+"\"";
+#define ARG(str) "\""+str+"\""
+
+#define TESTSUITE_ARGS		"\"1"+TestSuite+"\" "+\
+                            "\"2"+TestCaseID+"\" "+\
+                            "\"3"+Functionality+"\" "+\
+                            "\"4"+TestDescription+"\" "+\
+                            "\"5"+Steps+"\" "+\
+                            "\"6"+ER+"\" "+\
+                            "\"7"+ValidTCs+"\" "+\
+                            "\"8" +Automation+"\" "+\
+                            "\"9"+RI+"\" "+\
+                            "\"A"+Note+"\"";
+
+#define HIST_ARGS			"\"1"+TestSuite+"\" "+\
+                            "\"2"+Functionality+"\" "+\
+                            "\"3"+RI+"\" "+\
+                            "\"4"+TestCaseID+"\" "+\
+                            "\"5"+Type+"\" "+\
+                            "\"6"+Date+"\" "+\
+                            "\"7"+Author;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -201,19 +210,20 @@ void MainWindow::changeTestCaseID() {
     qDebug() << __PRETTY_FUNCTION__ << endl;
 
     QString testSuite = ui->testSuite_cb->currentText();
+
     QString testCaseID = static_cast<QComboBox*>(ui->stackedWidget->currentWidget())->currentText();
     if (testCaseID == "") {
         return;
     }
-    QString data = pyW->getData(ARGS(testSuite), ARGS(testCaseID));
-    // qDebug() << "-----------------------------------------------------" << endl;
-    // qDebug() << data << endl;
-    // qDebug() << "-----------------------------------------------------" << endl;
+
+    QString data = pyW->getData(ARG(testSuite), ARG(testCaseID));
     data = data.left(data.length()-1);
-    QStringList dataList = data.mid(4, data.length()).split("', '");
-    qDebug() << "-----------------------------------------------------" << endl;
+    qDebug() << "------------------------------------------" << endl;
     qDebug() << data << endl;
-    qDebug() << "-----------------------------------------------------" << endl;
+    qDebug() << "------------------------------------------" << endl;
+    QRegExp separator("\',\\s\'|\',\\s\"|\",\\s\'|\",\\s\"");
+    QStringList dataList = data.split(separator);
+    qDebug() << dataList << endl;
     ui->func_le->setText(dataList[1]);
 
     ui->testDes_le->setAcceptRichText(true);
@@ -234,10 +244,10 @@ void MainWindow::changeTestCaseID() {
     ui->valid_cb->setCurrentText(dataList[5]);
     ui->autoAvai_cb->setCurrentText(dataList[6]);
     ui->ri_le->setText("");
-    if (dataList.length() >=8)
+    if (dataList.length()>=8)
         ui->ri_le->setText(dataList[7]);
     ui->note_le->setText("");
-    if (dataList.length() ==9) {
+    if (dataList.length()==9) {
         for (auto line : dataList[8].split("\\n")) {
             ui->note_le->append(line);
         }
@@ -247,9 +257,14 @@ void MainWindow::changeTestCaseID() {
 QString MainWindow::createTestCaseID() {
     qDebug() << __PRETTY_FUNCTION__ << endl;
 
-    QString args = ARGS(ui->testSuite_cb->currentText());
-    QString latestID = pyW->getTestCaseIDs(args).last();
+    QString args = ARG(ui->testSuite_cb->currentText());
+    QStringList testCaseIDs = pyW->getTestCaseIDs(args);
+    QString latestID = testCaseIDs.last();
     qint16 length = latestID.length();
+    if (latestID.at(length-1) <'0' || latestID.at(length-1) > '9') {
+        latestID = testCaseIDs[testCaseIDs.length()-2];
+        length = latestID.length();
+    }
     qint16 index = -1;
     qint16 num = 0;
     for (int i = length-1; i >= 0; --i) {
@@ -262,11 +277,10 @@ QString MainWindow::createTestCaseID() {
         for (int i = index+1; i < length; ++i) {
             num += num*10 + latestID.at(i).toLatin1()-'0';
         }
+        return latestID.left(index+1)+QString::number(num+1);
     }
-    else {
-        //TODO Update this code
-    }
-    return latestID.left(index+1)+QString::number(num+1);
+    else
+        return "";
 }
 
 void MainWindow::Finished() {
@@ -291,60 +305,22 @@ void MainWindow::Finished() {
 
         if (ui->pushButton_2->text() == "Add") {
             TestCaseID = static_cast<QLineEdit*>(ui->stackedWidget->currentWidget())->text();
-            QString add_args = PY_ARGS;
-                                // "\"1"+TestSuite+"\" "+
-                                // "\"2"+TestCaseID+"\" "+
-                                // "\"3"+Functionality+"\" "+
-                                // "\"4"+TestDescription+"\" "+
-                                // "\"5"+Steps+"\" "+
-                                // "\"6"+ER+"\" "+
-                                // "\"7"+ValidTCs+"\" "+
-                                // "\"8" +Automation+"\" "+
-                                // "\"9"+RI+"\" "+
-                                // "\"A"+Note+"\"";
-
+            QString add_args = TESTSUITE_ARGS;
             result = pyW->Add(add_args);
         }
         if (ui->pushButton_2->text() == "Update") {
             TestCaseID = static_cast<QComboBox*>(ui->stackedWidget->currentWidget())->currentText();
-            QString update_args = PY_ARGS;
-                                // "\"1"+TestSuite+"\" "+
-                                // "\"2"+TestCaseID+"\" "+
-                                // "\"3"+Functionality+"\" "+
-                                // "\"4"+TestDescription+"\" "+
-                                // "\"5"+Steps+"\" "+
-                                // "\"6"+ER+"\" "+
-                                // "\"7"+ValidTCs+"\" "+
-                                // "\"8" +Automation+"\" "+
-                                // "\"9"+RI+"\" "+
-                                // "\"A"+Note+"\"";
+            QString update_args = TESTSUITE_ARGS;
             result = pyW->Update(update_args);
         }
 
         if (ui->pushButton_2->text() == "Delete") {
             TestCaseID = static_cast<QComboBox*>(ui->stackedWidget->currentWidget())->currentText();
-            QString delete_args = PY_ARGS;
-                                // "\"1"+TestSuite+"\" "+
-                                // "\"2"+TestCaseID+"\" "+
-                                // "\"3"+Functionality+"\" "+
-                                // "\"4"+TestDescription+"\" "+
-                                // "\"5"+Steps+"\" "+
-                                // "\"6"+ER+"\" "+
-                                // "\"7"+ValidTCs+"\" "+
-                                // "\"8" +Automation+"\" "+
-                                // "\"9"+RI+"\" "+
-                                // "\"A"+Note+"\"";
+            QString delete_args = TESTSUITE_ARGS;
             result = pyW->Delete(delete_args);
         }
         if (result.trimmed() == "Success") {
-            QString hist_args =
-                "\"1"+TestSuite+"\" "+
-                "\"2"+Functionality+"\" "+
-                "\"3"+RI+"\" "+
-                "\"4"+TestCaseID+"\" "+
-                "\"5"+Type+"\" "+
-                "\"6"+Date+"\" "+
-                "\"7"+Author;
+            QString hist_args = HIST_ARGS;
             result = pyW->updateHistory(hist_args);
         }
         QMessageBox msgBox;

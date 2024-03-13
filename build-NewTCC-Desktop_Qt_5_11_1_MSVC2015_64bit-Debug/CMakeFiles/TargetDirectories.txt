@@ -1,0 +1,7 @@
+C:/Users/sangd/Documents/newTCC/build-NewTCC-Desktop_Qt_5_11_1_MSVC2015_64bit-Debug/CMakeFiles/NewTCC.dir
+C:/Users/sangd/Documents/newTCC/build-NewTCC-Desktop_Qt_5_11_1_MSVC2015_64bit-Debug/CMakeFiles/edit_cache.dir
+C:/Users/sangd/Documents/newTCC/build-NewTCC-Desktop_Qt_5_11_1_MSVC2015_64bit-Debug/CMakeFiles/rebuild_cache.dir
+C:/Users/sangd/Documents/newTCC/build-NewTCC-Desktop_Qt_5_11_1_MSVC2015_64bit-Debug/CMakeFiles/list_install_components.dir
+C:/Users/sangd/Documents/newTCC/build-NewTCC-Desktop_Qt_5_11_1_MSVC2015_64bit-Debug/CMakeFiles/install.dir
+C:/Users/sangd/Documents/newTCC/build-NewTCC-Desktop_Qt_5_11_1_MSVC2015_64bit-Debug/CMakeFiles/install/local.dir
+C:/Users/sangd/Documents/newTCC/build-NewTCC-Desktop_Qt_5_11_1_MSVC2015_64bit-Debug/CMakeFiles/NewTCC_autogen.dir
