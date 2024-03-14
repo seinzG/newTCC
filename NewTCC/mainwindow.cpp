@@ -26,16 +26,12 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    qDebug() << __PRETTY_FUNCTION__ << endl;
-
     ui->setupUi(this);
     this->initialize();
 }
 
 MainWindow::~MainWindow()
 {
-    qDebug() << __PRETTY_FUNCTION__ << endl;
-
     QSettings settings("Intel", "Terralogic");
     settings.setValue("Author", ui->author_line->text());
     delete this->testCaseID_line;
@@ -45,8 +41,6 @@ MainWindow::~MainWindow()
 }
 
 bool MainWindow::initialize() {
-    qDebug() << __PRETTY_FUNCTION__ << endl;
-
     pyW = new Wrapper();
     pyW->createToken();
 
@@ -65,6 +59,7 @@ bool MainWindow::initialize() {
     QDateTime date = QDateTime::currentDateTime();
     ui->dateEdit->setDateTime(date);
 
+    //TestCaseID ComboBox and LineEdit
     this->testCaseID_line = new QLineEdit();
     QString newTestCaseID = this->createTestCaseID();
     this->testCaseID_line->setText(newTestCaseID);
@@ -97,8 +92,6 @@ bool MainWindow::initialize() {
 }
 
 void MainWindow::changeType() {
-    qDebug() << __PRETTY_FUNCTION__ << endl;
-
     if (ui->type_cb->currentText() == "Added New") {
         this->change2New();
         return;
@@ -113,8 +106,6 @@ void MainWindow::changeType() {
 }
 
 void MainWindow::change2New() {
-    qDebug() << __PRETTY_FUNCTION__ << endl;
-
     ui->stackedWidget->setCurrentWidget(this->testCaseID_line);
     QLineEdit* le = static_cast<QLineEdit*>(ui->stackedWidget->currentWidget());
     le->setText(this->createTestCaseID());
@@ -147,8 +138,6 @@ void MainWindow::change2New() {
 }
 
 void MainWindow::change2Update() {
-    qDebug() << __PRETTY_FUNCTION__ << endl;
-
     this->updateOrDelete();
 
     ui->func_le->setReadOnly(false);
@@ -164,8 +153,6 @@ void MainWindow::change2Update() {
 }
 
 void MainWindow::change2Delete() {
-    qDebug() << __PRETTY_FUNCTION__ << endl;
-
     this->updateOrDelete();
 
     ui->func_le->setReadOnly(true);
@@ -181,8 +168,6 @@ void MainWindow::change2Delete() {
 }
 
 void MainWindow::updateOrDelete() {
-    qDebug() << __PRETTY_FUNCTION__ << endl;
-
     ui->stackedWidget->setCurrentWidget(this->testCaseID_cb);
     QComboBox* cb = static_cast<QComboBox*>(ui->stackedWidget->currentWidget());
     cb->clear();
@@ -193,8 +178,6 @@ void MainWindow::updateOrDelete() {
 }
 
 void MainWindow::changeTestSuite() {
-    qDebug() << __PRETTY_FUNCTION__ << endl;
-
     if (ui->type_cb->currentText() == "Added New") {
         static_cast<QLineEdit*>(ui->stackedWidget->currentWidget())->setText(this->createTestCaseID());
     }
@@ -207,8 +190,6 @@ void MainWindow::changeTestSuite() {
 }
 
 void MainWindow::changeTestCaseID() {
-    qDebug() << __PRETTY_FUNCTION__ << endl;
-
     QString testSuite = ui->testSuite_cb->currentText();
 
     QString testCaseID = static_cast<QComboBox*>(ui->stackedWidget->currentWidget())->currentText();
@@ -218,12 +199,8 @@ void MainWindow::changeTestCaseID() {
 
     QString data = pyW->getData(ARG(testSuite), ARG(testCaseID));
     data = data.left(data.length()-1);
-    qDebug() << "------------------------------------------" << endl;
-    qDebug() << data << endl;
-    qDebug() << "------------------------------------------" << endl;
     QRegExp separator("\',\\s\'|\',\\s\"|\",\\s\'|\",\\s\"");
     QStringList dataList = data.split(separator);
-    qDebug() << dataList << endl;
     ui->func_le->setText(dataList[1]);
 
     ui->testDes_le->setAcceptRichText(true);
@@ -255,8 +232,6 @@ void MainWindow::changeTestCaseID() {
 }
 
 QString MainWindow::createTestCaseID() {
-    qDebug() << __PRETTY_FUNCTION__ << endl;
-
     QString args = ARG(ui->testSuite_cb->currentText());
     QStringList testCaseIDs = pyW->getTestCaseIDs(args);
     QString latestID = testCaseIDs.last();
@@ -285,8 +260,6 @@ QString MainWindow::createTestCaseID() {
 
 void MainWindow::Finished() {
     {
-        qDebug() << __PRETTY_FUNCTION__ << endl;
-
         QString Author = ui->author_line->text();
         QString Type = ui->type_cb->currentText();
         QString Date = ui->dateEdit->text();
